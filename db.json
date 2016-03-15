@@ -1,0 +1,67 @@
+{
+  "user": [
+    {
+      "country": "US",
+      "display_name": null,
+      "email": "trungnm0512@gmail.com",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/user/meobeoi"
+      },
+      "followers": {
+        "href": null,
+        "total": 1
+      },
+      "href": "https://api.spotify.com/v1/users/meobeoi",
+      "id": "meobeoi",
+      "images": [],
+      "product": "open",
+      "type": "user",
+      "uri": "spotify:user:meobeoi"
+    }
+  ],
+  "selectedPlaylist": [
+    {
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "http://open.spotify.com/user/meobeoi/playlist/6GKCo1Ra476yX75xMx9nxV"
+      },
+      "href": "https://api.spotify.com/v1/users/meobeoi/playlists/6GKCo1Ra476yX75xMx9nxV",
+      "id": "6GKCo1Ra476yX75xMx9nxV",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://mosaic.scdn.co/640/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://mosaic.scdn.co/300/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
+          "width": 300
+        },
+        {
+          "height": 60,
+          "url": "https://mosaic.scdn.co/60/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
+          "width": 60
+        }
+      ],
+      "name": "SpotifyPlus",
+      "owner": {
+        "external_urls": {
+          "spotify": "http://open.spotify.com/user/meobeoi"
+        },
+        "href": "https://api.spotify.com/v1/users/meobeoi",
+        "id": "meobeoi",
+        "type": "user",
+        "uri": "spotify:user:meobeoi"
+      },
+      "public": false,
+      "snapshot_id": "A1wYCgpBnUoST4w+2wFBg1ZaM3IF06ccTKRJoWVZQic+K3gClk24uhsT6wfzX+lh",
+      "tracks": {
+        "href": "https://api.spotify.com/v1/users/meobeoi/playlists/6GKCo1Ra476yX75xMx9nxV/tracks",
+        "total": 6
+      },
+      "type": "playlist",
+      "uri": "spotify:user:meobeoi:playlist:6GKCo1Ra476yX75xMx9nxV"
+    }
+  ]
+}

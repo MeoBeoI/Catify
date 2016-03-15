@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <title>Spotify Plus</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.2/material.indigo-pink.min.css">
+    <script>window.$ = window.jQuery = require('./scripts/jquery.js');</script>
+    <script>
+      jQuery.browser = {};
+      (function () {
+          jQuery.browser.msie = false;
+          jQuery.browser.version = 0;
+          if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+              jQuery.browser.msie = true;
+              jQuery.browser.version = RegExp.$1;
+          }
+      })();
+    </script>
+    <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+    <script src="./scripts/jquery.ba-bbq.js"></script>
+    <script src="./bower_components/spotify-web-api-js/src/spotify-web-api.js"></script>
+    <script src="./scripts/mqttws31-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <style>
+      body {
+        height : auto;
+        width  : 200px;
+        margin: 0;
+      }
+
+      .foot {
+        height : 50px;
+        weight : auto;
+        background-color: red;
+        position: relative;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <select name="playlist" id="playlist" style="width: 100%"></select>
+    <form action="#">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="text" id="input">
+        <label class="mdl-textfield__label" for="input"></label>
+      </div>
+    </form>
+    <button id="logout-btn">Logout</button>
+    <ul class="mdl-list" id="results"></ul>
+    <div id="app"></div>
+    <script src="/static/bundle.js"></script>
+  </body>
+  <script>
+    const electron = require('electron')
+    const ipcRenderer = electron.ipcRenderer;
+    var user = {}
+    var playlist = {}
+    var accessToken = {}
+
+    function playTrack (uri) {
+      ipcRenderer.send('playTrack', uri)
+    }
+
+    // On display send init signal to mail
+    ipcRenderer.send('initial')
+    // On receive response from init signal
+    ipcRenderer.on('main-initial', function(event, response) {
+      user             = response.user
+      selectedPlaylist = response.selectedPlaylist
+      // Check missing items[0]
+      playlists        = JSON.parse(response.playlists)
+      accessToken      = response.accessToken
+      // Init page after getting info from main
+      const spotifyApi = new SpotifyWebApi();
+      spotifyApi.setAccessToken(accessToken);
+
+      /* ========== Display =========== */
+      // Get user playlists
+      playlists.forEach( item => {
+        $('#playlist').append(`<option value="${item.id}">${item.name}</option>`)
+      })
+
+      // On playlist changed
+      $('#playlist').on('change', () => {
+        ipcRenderer.send('playlistChanged', $('#playlist').val())
+      })
+      /* ========== END : Display =========== */
+
+      /* ========== Search track =========== */
+      $('#input').focus()
+      // Search on typing
+      $('#input').keypress(debounce(function (event) {
+        searchTrackHandler()
+      }, 250));
+
+      $('#search-btn').on('click', searchTrackHandler)
+
+      $( "#target" ).keypress(function(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode === '13')  {
+          searchTrackHandler()
+        }
+      });
+
+      function searchTrackHandler (argument) {
+        spotifyApi.searchTracks($('#input').val(), {limit: 5})
+          .then( genSearchResults, function(err) {
+            console.error(err);
+          });
+      }
+
+      // @ https://remysharp.com/2010/07/21/throttling-function-calls
+      function debounce(fn, delay) {
+        var timer = null;
+        return function () {
+          var context = this, args = arguments;
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            fn.apply(context, args);
+          }, delay);
+        };
+      }
+
+
+      function genSearchResults (data) {
+        $('#results').html('')
+        data.tracks.items.forEach((item) => {
+          var tmp = `<div onclick="playTrack('${item.uri}')" class="mdl-list__item mdl-list__item--two-line" id="${item.id}" uri="${item.uri}">
+            <span class="mdl-list__item-primary-content">
+              <span>${item.name}</span>
+              <span class="mdl-list__item-sub-title">${item.artists[0].name}</span>
+            </span>
+            <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">start</i></a>
+          </div>`
+          $('#results').append(tmp)
+        })
+      }
+      /* ========== END : Search track =========== */
+
+
+      /* ========== Logout =========== */
+      $('#logout-btn').on('click', logout )
+      function logout () {
+        ipcRenderer.send('logout')
+        location.replace('https://www.spotify.com/us/logout/')
+      }
+      /* ========== END : logout =========== */
+
+      /* ========== Play Track =========== */
+      $(document).keypress(function(event){
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if (keycode == '13'){
+            event.preventDefault()
+            playTrack($('.mdl-list__item').first().attr('uri'))
+          }
+      });
+      /* ========== END: Play Track =========== */
+    });
+  </script>
+</html>
