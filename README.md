@@ -80,7 +80,6 @@ $ npm run package-all
 
 Use `electron-packager` to pack your app with `--all` options for darwin (osx), linux and win32 (windows) platform. After build, you will find them in `release` folder. Otherwise, you will only find one for your os.
 
-
 ## Maintainers
 
 - [MeoBeoI](https://github.com/meobeoi)

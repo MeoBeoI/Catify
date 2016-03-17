@@ -44,8 +44,7 @@ var mbOptions = {
   width         : 320,
   height        : 210,
   resizable     : false,
-  useContentSize : true,
-  'use-content-size' : true
+  useContentSize : true
 }
 const menubar = require('menubar')
 const mb      = menubar(mbOptions)
