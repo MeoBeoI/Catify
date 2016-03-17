@@ -42,7 +42,7 @@ export default class PlaylistSelector extends Component {
   render() {
     return (
       <div>
-        <SelectField value={this.state.value} onChange={this.handleChange}>
+        <SelectField value={this.state.value}  fullWidth={true} onChange={this.handleChange}>
           {this.state.playlists.map(playlist => <MenuItem value={playlist.id} primaryText={playlist.name}/>)}
         </SelectField>
       </div>

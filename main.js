@@ -15,7 +15,7 @@ const SpotifyWebApi  = require('spotify-web-api-node');
 const _              = require('lodash')
 const low            = require('lowdb')
 const storage        = require('lowdb/file-sync')
-const db             = low('db.json', { storage })
+const db             = low(__dirname + '/db.json', { storage })
 // App variables
 var user             = db('user').first()
 var selectedPlaylist = db('selectedPlaylist').first()
@@ -36,18 +36,47 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret : SECRET,
   redirectUri  : REDIRECT_URL
 });
+
 var mbOptions = {
-  // width     : 300,
-  height    : 600,
-  "use-content-size" : true,
-  "useContentSize" : true,
-  "index" : `file://${__dirname}/app/app.html`,
-  // resizable : false,
-  tooltip   : "SpotifyPlus"
+  dir           : __dirname + '/app',
+  tooltip       : "SpotifyPlus",
+  preloadWindow : true, // TODO: enable if already logged in
+  width         : 320,
+  height        : 210,
+  resizable     : false,
+  useContentSize : true,
+  'use-content-size' : true
 }
 const menubar = require('menubar')
 const mb      = menubar(mbOptions)
+var debug = process.env.NODE_ENV === 'development'
 
+function initial () {
+  // if (!debug) {
+  //   mb.window.setSize(320, 500)
+  //   mb.window.setMaximumSize(320, 600)
+  //   mb.window.setMinimumSize(320, 400)
+  // } else {
+  //   mb.window.setSize(620, 700)
+  //   mb.window.setMaximumSize(1220, 800)
+  //   mb.window.setMinimumSize(620, 600)
+  // }
+
+  // // TODO
+  // mb.window.setSize(300, 210)
+
+  mb.window.setResizable(true)
+  mb.window.loadURL(`file://${__dirname}/app/app.html`)
+  mb.window.on('focus', function() { _sendWindowEvent('focus') })
+  if (debug) {
+    // mb.window.openDevTools()
+  }
+}
+
+function _sendWindowEvent(name) {
+  if (!mb.window) return
+  mb.window.webContents.send('WindowEvent', name)
+}
 
 crashReporter.start();
 
@@ -66,7 +95,11 @@ app.on('ready', () => {
     .then(getPlaylists)
     .then(getSelectedPlaylist)
     .then(() => {
+      initial()
       console.log('Finish');
+      console.log('Doing some dirty stuffs');
+      // Renew accessToken
+      setInterval(getAccessToken, 1000 * 3500)
     })
     .catch(errorHandler)
  
@@ -94,7 +127,11 @@ ipcMain.on('initial', (event, message) => {
 
 ipcMain.on('search', (event, track) => {
   spotifyApi.searchTracks(track, {limit: 5})
-  .then( data => event.sender.send('main-search', data.body.tracks.items), 
+  .then( data => { 
+    // Resize Window
+    mb.window.setSize(400, 585)
+    event.sender.send('main-search', data.body.tracks.items)
+  }, 
     err => console.error(err))
 });
 
@@ -102,8 +139,18 @@ ipcMain.on('playlistChanged', (event, message) => {
   selectedPlaylist = playlists.items.find(x => x.id === message)
 });
 
-ipcMain.on('playTrack', (event, uri) => {
-  spotifyPlayer.playTrack(uri, (track) => {});
+ipcMain.on('playTrack', (event, track) => {
+  spotifyPlayer.playTrack(track.uri, () => {
+    _sendPlayTrackEvent(track)
+  });
+});
+
+ipcMain.on('pause', (event, track) => {
+  spotifyPlayer.pause(() => event.sender.send('main-pause', 'PAUSE'));
+});
+
+ipcMain.on('resume', (event, track) => {
+  spotifyPlayer.play(() => event.sender.send('main-resume', 'RESUME') );
 });
 
 ipcMain.on('logout', (event, uri) => {
@@ -111,6 +158,12 @@ ipcMain.on('logout', (event, uri) => {
   db.object = {}
   db.write()
 });
+
+function _sendPlayTrackEvent(track) {
+  if (!mb.window) return
+  mb.window.webContents.send('main-play-track', track)
+}
+
 
 /**
  * Functions
@@ -145,7 +198,7 @@ function addTrackToSavedTracks () {
 /* ------------------------ Initial app ----------------------------- */
 function getAccessToken () {
   return new Promise((resolve, reject) => {
-    const authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
+    var authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
     authWindow.loadUrl(ACCESS_URL);
     // Display auth window for first time
     if (_.isEmpty(user)) {
@@ -315,4 +368,11 @@ function notification (data) {
 
 function errorHandler (err) {
   console.log('Err handler : ', err);
+  // TODO: Handle refresh token
+  if (err.statusCode === 401) {
+    getAccessToken()
+      .then(() => {
+        console.log('Get new AccessToken');
+      })
+  }
 }

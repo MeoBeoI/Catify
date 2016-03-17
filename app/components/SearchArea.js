@@ -8,6 +8,7 @@ import {debounce}           from 'throttle-debounce';
 import {ipcRenderer}        from 'electron';
 import AvPlayArrow          from 'material-ui/lib/svg-icons/av/play-arrow';
 import Avatar               from 'material-ui/lib/avatar';
+import styles               from './SearchArea.css';
 
 export default class SearchArea extends Component {
   constructor() {
@@ -38,13 +39,17 @@ export default class SearchArea extends Component {
   }
 
   playTrack(track) {
-    ipcRenderer.send('playTrack', track.uri)
+    ipcRenderer.send('playTrack', track)
   }
 
   render() {
     return (
       <div className="search-area">
-        <TextField floatingLabelText="Search" onKeyUp={this.onChange.bind(this)} />
+        <TextField 
+          floatingLabelText="Search" 
+          onKeyUp={this.onChange.bind(this)} 
+          fullWidth={true}
+        />
         {(() => 
         (!_.isEmpty(this.state.results)) ?
         <List>
