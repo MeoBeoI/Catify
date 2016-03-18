@@ -1,6 +1,7 @@
 # Catify
-Utility for Spotifty
-- Open Catify and ready for Search  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd> ( default )
+Utility for Spotifty, even your cat can use **Spotify** now !
+- Show Catify: <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd> ( default )
+- Play track on search results: <kbd>Ctrl</kbd> <kbd>Number</kbd>
 - Save to library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>]</kbd> ( default )
 - Remove from library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>[</kbd> ( default )
 - Save to Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>=</kbd> ( default )
@@ -89,4 +90,5 @@ MIT
 
 ## Related resource
 - [electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate)
+- [material-ui](http://www.material-ui.com)
 

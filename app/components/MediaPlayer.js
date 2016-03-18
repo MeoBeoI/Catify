@@ -16,6 +16,7 @@ export default class MediaPlayer extends Component {
       track       : {},
       artist      : ''
     };
+
     ipcRenderer.on('main-play-track', (event, response) => {
       this.setState({ 
         playerState : 'PLAY',
@@ -25,15 +26,15 @@ export default class MediaPlayer extends Component {
         count       : 0,
       })
 
-      var checkPlayer = setInterval(() => {
-        this.setState({ 
-          count: this.state.count + 1,
-          current: ( this.state.count / ( response.duration_ms / 1000 )) * 100
-        })
-        if (this.state.current >= 100){
-          clearInterval(checkPlayer)
-        }
-      }, 1000)
+      // var checkPlayer = setInterval(() => {
+      //   this.setState({ 
+      //     count: this.state.count + 1,
+      //     current: ( this.state.count / ( response.duration_ms / 1000 )) * 100
+      //   })
+      //   if (this.state.current >= 100){
+      //     clearInterval(checkPlayer)
+      //   }
+      // }, 1000)
       
     })
   }
@@ -43,18 +44,14 @@ export default class MediaPlayer extends Component {
   pauseClickHandler = (event, value) => {
     ipcRenderer.send('pause', '')
     ipcRenderer.on('main-pause', (event, value) => {
-      this.setState({ 
-        playerState : 'PAUSE',
-      })
+      this.setState({ playerState : 'PAUSE' })
     })
   }
 
   playClickHandler = (event, value) => {
     ipcRenderer.send('resume', '')
     ipcRenderer.on('main-resume', (event, value) => {
-      this.setState({ 
-        playerState : 'PLAY',
-      })
+      this.setState({ playerState : 'PLAY' })
     })
   }
 
@@ -64,7 +61,6 @@ export default class MediaPlayer extends Component {
         <LinearProgress mode="determinate" value={this.state.current}/>
         <h5>{this.state.track.name} - {this.state.artist}</h5>
         <div className={styles.floatBtn}>
-          
           {(() => 
             (this.state.playerState === 'PLAY')
             ? <FloatingActionButton onMouseDown={this.pauseClickHandler} ><Pause/></FloatingActionButton>

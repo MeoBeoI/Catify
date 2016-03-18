@@ -17,10 +17,20 @@ export default class SearchArea extends Component {
       results : []
     };
     this.doSearch = debounce(500, this.doSearch)
+    // Focus search input on show
+    ipcRenderer.on('focus-input', (event, response) => {  
+      $('#search-input').focus()
+    })
+    // Play track with Ctrl + Num
+    $(window).keypress(event => {
+      if (this.state.results && event.which >= 49 && event.which <= 57 && event.ctrlKey) {
+        this.playTrack(this.state.results[event.which - 49])
+      }
+    })
   }
 
   onChange(e) { 
-    if(e.key === 'Enter'){
+    if (e.key === 'Enter'){
       this.playTrack(this.state.results[0])
     } else {
       this.doSearch(e.target.value)  
@@ -45,15 +55,15 @@ export default class SearchArea extends Component {
   render() {
     return (
       <div className="search-area">
-        <TextField 
+        <TextField
+          id='search-input' 
           floatingLabelText="Search" 
           onKeyUp={this.onChange.bind(this)} 
-          fullWidth={true}
-        />
+          fullWidth={true} />
         {(() => 
         (!_.isEmpty(this.state.results)) ?
         <List>
-          {this.state.results.map( result => 
+          {this.state.results.map(result => 
             <ListItem 
               primaryText={result.name} 
               secondaryText={result.artists[0].name}

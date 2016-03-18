@@ -1,0 +1,6 @@
+.settingBtn {
+  position: absolute;
+  right: 25px;
+  top: -5px;
+  z-index: 2;
+}
