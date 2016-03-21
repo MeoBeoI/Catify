@@ -1,11 +1,15 @@
 # Catify
-Utility for Spotifty
-
+Utility for Spotifty, even your cat can use **Spotify** now !
+- Show Catify: <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd> ( default )
+- Play track on search results: <kbd>Ctrl</kbd> <kbd>Number</kbd>
+- Save to library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>]</kbd> ( default )
+- Remove from library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>[</kbd> ( default )
+- Save to Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>=</kbd> ( default )
+- Remove from Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>-</kbd> ( default )
 
 ## Screenshot
 
-![]()
-
+![Catify](http://www.codeconcat.com/wp-content/uploads/2016/03/shot1.gif)
 ## Install
 
 First, clone the repo via git:
@@ -36,25 +40,6 @@ or run two servers with one command
 $ npm run dev
 ```
 
-*Note: requires a node version >= 4 and an npm version >= 2.*
-
-#### Toggle Chrome DevTools
-
-- OS X: <kbd>Cmd</kbd> <kbd>Alt</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-- Windows: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-
-*See [electron-debug](https://github.com/sindresorhus/electron-debug) for more information.*
-
-
-## CSS Modules
-
-This boilerplate out of the box is configured to use [css-modules](https://github.com/css-modules/css-modules).
-
-All `.css` file extensions will use css-modules unless it has `.global.css`.
-
-If you need global styles, stylesheets with `.global.css` will not go through the
-css-modules loader. e.g. `app.global.css`
-
 
 ## Package
 
@@ -65,7 +50,7 @@ $ npm run package
 To package apps for all platforms:
 
 ```bash
-$ npm run package-all
+$ npm run package
 ```
 
 #### Options
@@ -73,20 +58,6 @@ $ npm run package-all
 - --name, -n: Application name (default: Catify)
 - --icon, -i: Application icon
 - --all: pack for all platforms
-
-Use `electron-packager` to pack your app with `--all` options for darwin (osx), linux and win32 (windows) platform. After build, you will find them in `release` folder. Otherwise, you will only find one for your os.
-
-`test`, `tools`, `release` folder and devDependencies in `package.json` will be ignored by default.
-
-#### Default Ignore modules
-
-We add some module's `peerDependencies` to ignore option as default for application size reduction.
-
-- `babel-core` is required by `babel-loader` and its size is ~19 MB
-- `node-libs-browser` is required by `webpack` and its size is ~3MB.
-
-> **Note:** If you want to use any above modules in runtime, for example: `require('babel/register')`, you should move them from `devDependencies` to `dependencies`.
-
 
 ## Maintainers
 
