@@ -60,7 +60,7 @@ function initial () {
   // }
 
   // // TODO
-  // mb.window.setSize(300, 210)
+  // mb.window.setSize(385, 210)
   mb.window.loadURL(`file://${__dirname}/app/app.html`)
   mb.window.on('focus', () => _sendWindowEvent('focus'))
   mb.window.on('show', () => _sendFocusInput() )
@@ -299,7 +299,6 @@ function getSelectedPlaylist () {
         db('selectedPlaylist').push(selectedPlaylist)
         resolve()
       } else {
-        console.log('Create new');
         // Create new "Catify" playlist 
         spotifyApi.createPlaylist(user.id, DEFAULT_PLAYLIST_NAME, { 'public' : false })
           .then( data => {
@@ -309,7 +308,6 @@ function getSelectedPlaylist () {
             selectedPlaylist = data.body
             // Save to Db
             db('selectedPlaylist').push(selectedPlaylist)
-            console.log('Created playlist!');
             resolve()
           }, reject );
       }
