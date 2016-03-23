@@ -16,6 +16,7 @@ const _              = require('lodash')
 const low            = require('lowdb')
 const storage        = require('lowdb/file-sync')
 const db             = low(__dirname + '/db.json', { storage })
+
 // App variables
 var user             = db('user').first()
 var selectedPlaylist = db('selectedPlaylist').first()
@@ -36,12 +37,12 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 var mbOptions = {
-  dir           : __dirname + '/app',
-  tooltip       : "Catify",
-  preloadWindow : true, // TODO: enable if already logged in
-  width         : 385,
-  height        : 210,
-  resizable     : true,
+  dir            : __dirname + '/app',
+  tooltip        : "Catify",
+  preloadWindow  : true, // TODO: enable if already logged in
+  width          : 385,
+  height         : 210,
+  resizable      : true,
   useContentSize : true
 }
 const menubar = require('menubar')
@@ -49,29 +50,12 @@ var mb        = menubar(mbOptions)
 var debug     = process.env.NODE_ENV === 'development'
 
 function initial () {
-  // if (!debug) {
-  //   mb.window.setSize(320, 500)
-  //   mb.window.setMaximumSize(320, 600)
-  //   mb.window.setMinimumSize(320, 400)
-  // } else {
-  //   mb.window.setSize(620, 700)
-  //   mb.window.setMaximumSize(1220, 800)
-  //   mb.window.setMinimumSize(620, 600)
-  // }
-
-  // // TODO
-  // mb.window.setSize(385, 210)
   mb.window.loadURL(`file://${__dirname}/app/app.html`)
-  mb.window.on('focus', () => _sendWindowEvent('focus'))
+  mb.window.on('focus', () => _sendFocusInput() )
   mb.window.on('show', () => _sendFocusInput() )
 }
 
 crashReporter.start();
-
-function _sendWindowEvent(name) {
-  if (!mb.window) return
-  mb.window.webContents.send('WindowEvent', name)
-}
 
 function _sendFocusInput () {
   if (!mb.window) return
@@ -130,8 +114,7 @@ ipcMain.on('search', (event, track) => {
     // Resize Window
     mb.window.setSize(385, 585)
     event.sender.send('main-search', data.body.tracks.items)
-  }, 
-    err => console.error(err))
+  }, err => errorHandler)
 });
 
 ipcMain.on('playlistChanged', (event, message) => {
@@ -139,18 +122,8 @@ ipcMain.on('playlistChanged', (event, message) => {
 });
 
 ipcMain.on('playTrack', (event, track) => {
-  spotifyPlayer.playTrack(track.uri, () => {
-    _sendPlayTrackEvent(track)
-  });
-});
-
-ipcMain.on('pause', (event, track) => {
-  spotifyPlayer.pause(() => event.sender.send('main-pause', 'PAUSE'));
-});
-
-ipcMain.on('resume', (event, track) => {
-  spotifyPlayer.play(() => event.sender.send('main-resume', 'RESUME') );
-});
+  spotifyPlayer.playTrack(track.uri, () => {  })
+})
 
 ipcMain.on('setting', (event, track) => {
   var settingWindow = new BrowserWindow({ 
@@ -169,12 +142,6 @@ ipcMain.on('logout', (event, uri) => {
   db.object = {}
   db.write()
 });
-
-function _sendPlayTrackEvent(track) {
-  if (!mb.window) return
-  mb.window.webContents.send('main-play-track', track)
-}
-
 
 /**
  * Functions
@@ -235,7 +202,6 @@ function getAccessToken () {
     if (_.isEmpty(user)) {
       authWindow.show();
     }
-
     authWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
       handleCallback(newUrl);
     });
@@ -431,5 +397,5 @@ function notification (data) {
 
 
 function errorHandler (err) {
-  console.log('Err handler : ', err);
+  console.error('Err handler : ', err);
 }

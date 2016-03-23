@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import PlaylistSelector     from '../components/PlaylistSelector';
-import MediaPlayer          from '../components/MediaPlayer';
 import SearchArea           from '../components/SearchArea';
 import SettingButton        from '../components/SettingButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -12,7 +11,6 @@ export default class App extends Component {
       <div className="app">
         <PlaylistSelector />
         <SearchArea />
-        <MediaPlayer />
         <SettingButton />
       </div>
     );
