@@ -27,8 +27,9 @@ export default class PlaylistSelector extends Component {
   loadPlaylist() {
     ipcRenderer.send('initial')
     ipcRenderer.on('main-initial', (event, response) => {
+      // TODO : check why missing playlists[0] when not using JSON.stringify()
       this.setState({
-        playlists : response.playlists,
+        playlists : JSON.parse(response.playlists),
         value     : response.selectedPlaylist.id
       })
     })
@@ -42,7 +43,7 @@ export default class PlaylistSelector extends Component {
   render() {
     return (
       <div>
-        <SelectField value={this.state.value} onChange={this.handleChange}>
+        <SelectField value={this.state.value}  fullWidth={true} onChange={this.handleChange}>
           {this.state.playlists.map(playlist => <MenuItem value={playlist.id} primaryText={playlist.name}/>)}
         </SelectField>
       </div>

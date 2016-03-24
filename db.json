@@ -3,7 +3,6 @@
     {
       "country": "US",
       "display_name": null,
-      "email": "trungnm0512@gmail.com",
       "external_urls": {
         "spotify": "https://open.spotify.com/user/meobeoi"
       },
@@ -23,28 +22,12 @@
     {
       "collaborative": false,
       "external_urls": {
-        "spotify": "http://open.spotify.com/user/meobeoi/playlist/6GKCo1Ra476yX75xMx9nxV"
+        "spotify": "http://open.spotify.com/user/meobeoi/playlist/3YHpPYkOeFs1XfaKTAWNnq"
       },
-      "href": "https://api.spotify.com/v1/users/meobeoi/playlists/6GKCo1Ra476yX75xMx9nxV",
-      "id": "6GKCo1Ra476yX75xMx9nxV",
-      "images": [
-        {
-          "height": 640,
-          "url": "https://mosaic.scdn.co/640/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
-          "width": 640
-        },
-        {
-          "height": 300,
-          "url": "https://mosaic.scdn.co/300/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
-          "width": 300
-        },
-        {
-          "height": 60,
-          "url": "https://mosaic.scdn.co/60/8ff639ce375f937fafd9abc56f1953ec389d0ef332cea8e98b1457468600712071fc5885be7978034cdfdf0127ea3ccbaf7c51068e0511281aa68b6d641bd4b037edd64cf3984898097074fba5c02008",
-          "width": 60
-        }
-      ],
-      "name": "SpotifyPlus",
+      "href": "https://api.spotify.com/v1/users/meobeoi/playlists/3YHpPYkOeFs1XfaKTAWNnq",
+      "id": "3YHpPYkOeFs1XfaKTAWNnq",
+      "images": [],
+      "name": "Catify",
       "owner": {
         "external_urls": {
           "spotify": "http://open.spotify.com/user/meobeoi"
@@ -55,13 +38,13 @@
         "uri": "spotify:user:meobeoi"
       },
       "public": false,
-      "snapshot_id": "A1wYCgpBnUoST4w+2wFBg1ZaM3IF06ccTKRJoWVZQic+K3gClk24uhsT6wfzX+lh",
+      "snapshot_id": "cv3+NakK79wUek2ZZc3GdaTCCf6kxb1k5NKUszX420a8ca6x2Mo3yqkO8jqAOfyF",
       "tracks": {
-        "href": "https://api.spotify.com/v1/users/meobeoi/playlists/6GKCo1Ra476yX75xMx9nxV/tracks",
-        "total": 6
+        "href": "https://api.spotify.com/v1/users/meobeoi/playlists/3YHpPYkOeFs1XfaKTAWNnq/tracks",
+        "total": 0
       },
       "type": "playlist",
-      "uri": "spotify:user:meobeoi:playlist:6GKCo1Ra476yX75xMx9nxV"
+      "uri": "spotify:user:meobeoi:playlist:3YHpPYkOeFs1XfaKTAWNnq"
     }
   ]
 }

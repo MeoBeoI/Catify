@@ -2,19 +2,24 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a)
 # Catify
 Utility for Spotifty, even your cat can use **Spotify** now !
-- Show Catify: <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd> ( default )
+
+- Show Catify: <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd>
 - Play track on search results: <kbd>Ctrl</kbd> <kbd>Number</kbd>
-- Save to library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>]</kbd> ( default )
-- Remove from library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>[</kbd> ( default )
-- Save to Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>=</kbd> ( default )
-- Remove from Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>-</kbd> ( default )
+- Save to library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>]</kbd>
+- Remove from library  : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>[</kbd>
+- Save to Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>=</kbd>
+- Remove from Playlist : <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>-</kbd>
 
 ## Screenshot
 
 ![Catify](http://www.codeconcat.com/wp-content/uploads/2016/03/shot1.gif)
+
 ## Install
 
-First, clone the repo via git:
+To install it download the latest release for your platform (OS X).
+
+If you're a developer 💻
+Clone the repo via git:
 
 ```bash
 git clone https://github.com/MeoBeoI/Catify.git
@@ -42,6 +47,7 @@ or run two servers with one command
 $ npm run dev
 ```
 
+*Note: requires a node version >= 4 and an npm version >= 2.*
 
 ## Package
 
@@ -49,25 +55,12 @@ $ npm run dev
 $ npm run package
 ```
 
-To package apps for all platforms:
-
-```bash
-$ npm run package
-```
-
-#### Options
-
-- --name, -n: Application name (default: Catify)
-- --icon, -i: Application icon
-- --all: pack for all platforms
-
 ## Maintainers
 
 - [MeoBeoI](https://github.com/meobeoi)
 
-## License
-MIT 
-
-## Related resource
+## Related Resources
 - [electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate)
+- [Menubar](https://github.com/maxogden/menubar)
+- [material-ui](http://www.material-ui.com)
 

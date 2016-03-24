@@ -13,43 +13,61 @@ const applescript    = require('applescript');
 const spotifyPlayer  = require('spotify-node-applescript');
 const SpotifyWebApi  = require('spotify-web-api-node');
 const _              = require('lodash')
+const querystring    = require('querystring')
+const Url            = require('url')
 const low            = require('lowdb')
 const storage        = require('lowdb/file-sync')
-const db             = low('db.json', { storage })
+const db             = low(__dirname + '/db.json', { storage })
+
 // App variables
 var user             = db('user').first()
 var selectedPlaylist = db('selectedPlaylist').first()
 var playlists        = {}
 var accessToken      = ""
 
-let mainWindow = null;
-
-const CLIENT_ID             = '65be55bf84924bcd949137ed3b585d6a'
-const SECRET                = '7a2f6bdf1f264dc59efce10ce35bfb80'
-const REDIRECT_URL          = 'http://meobeoi.com/spotifyplus/callback'
+const CLIENT_ID             = 'b6dead381db24aee9825a6baf524e0f3'
+const SECRET                = '9dc4b9daea024d1b87b231527d7b99b8'
+const REDIRECT_URL          = 'http://meobeoi.com/catify/callback'
 const SCOPES                = 'user-read-private playlist-modify-private playlist-read-collaborative playlist-read-private user-library-read user-library-modify'
 const STATE                 = '123'
-const DEFAULT_PLAYLIST_NAME = "SpotifyPlus"
+const DEFAULT_PLAYLIST_NAME = "Catify"
 const ACCESS_URL = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URL)}&scope=${encodeURIComponent(SCOPES)}&response_type=token&state=${STATE}`
-var spotifyApi = new SpotifyWebApi({
+const LOGOUT_URL = 'https://www.spotify.com/logout/'
+const spotifyApi = new SpotifyWebApi({
   clientId     : CLIENT_ID,
   clientSecret : SECRET,
   redirectUri  : REDIRECT_URL
 });
+
 var mbOptions = {
-  // width     : 300,
-  height    : 600,
-  "use-content-size" : true,
-  "useContentSize" : true,
-  "index" : `file://${__dirname}/app/app.html`,
-  // resizable : false,
-  tooltip   : "SpotifyPlus"
+  dir            : __dirname + '/app',
+  tooltip        : "Catify",
+  preloadWindow  : true, // TODO: enable if already logged in
+  width          : 385,
+  height         : 210,
+  resizable      : true,
+  // TODO : Check this shit
+  useContentSize : true
 }
 const menubar = require('menubar')
-const mb      = menubar(mbOptions)
+var mb        = menubar(mbOptions)
+var debug     = process.env.NODE_ENV === 'development'
 
+function initial () {
+  mb.window.loadURL(`file://${__dirname}/app/app.html`)
+  mb.window.on('focus', () => _sendFocusInput() )
+  mb.window.on('show', () => _sendFocusInput() )
+
+  // Renew accessToken
+  setInterval(getAccessToken, 1000 * 3500)
+}
 
 crashReporter.start();
+
+function _sendFocusInput () {
+  if (!mb.window) return
+  mb.window.webContents.send('focus-input', '')
+}
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')();
@@ -65,15 +83,15 @@ app.on('ready', () => {
     .then(getMe)
     .then(getPlaylists)
     .then(getSelectedPlaylist)
-    .then(() => {
-      console.log('Finish');
-    })
+    .then(initial)
     .catch(errorHandler)
- 
+
   // Set shortcut
-  globalShortcut.register('ctrl + p + =', addTrackToPlaylist);
+  globalShortcut.register('ctrl + p + =', addTrackToPlaylist)
+  globalShortcut.register('ctrl + p + -', removeTrackFromPlaylist);
 
   globalShortcut.register('ctrl + p + ]', addTrackToSavedTracks);
+  globalShortcut.register('ctrl + p + [', removeTrackFromSaved);
 
   globalShortcut.register('ctrl + p + /', mb.showWindow);
 
@@ -86,7 +104,8 @@ ipcMain.on('initial', (event, message) => {
   var response = {
     user             : user,
     selectedPlaylist : selectedPlaylist,
-    playlists        : playlists.items,
+    // TODO : Check why missing playlists[0]
+    playlists        : JSON.stringify(playlists.items),
     accessToken      : accessToken
   }
   event.sender.send('main-initial', response);
@@ -94,22 +113,44 @@ ipcMain.on('initial', (event, message) => {
 
 ipcMain.on('search', (event, track) => {
   spotifyApi.searchTracks(track, {limit: 5})
-  .then( data => event.sender.send('main-search', data.body.tracks.items), 
-    err => console.error(err))
+  .then( data => {
+    // Resize Window
+    mb.window.setSize(385, 585)
+    event.sender.send('main-search', data.body.tracks.items)
+  }, err => errorHandler)
+});
+
+ipcMain.on('empty-search', (event, track) => {
+  mb.window.setSize(385, 210)
 });
 
 ipcMain.on('playlistChanged', (event, message) => {
   selectedPlaylist = playlists.items.find(x => x.id === message)
 });
 
-ipcMain.on('playTrack', (event, uri) => {
-  spotifyPlayer.playTrack(uri, (track) => {});
+ipcMain.on('playTrack', (event, track) => {
+  spotifyPlayer.playTrack(track.uri, () => {  })
+})
+
+// TODO : Create setting page
+ipcMain.on('setting', (event, track) => {
+  var settingWindow = new BrowserWindow({
+    width: 800, height: 600, show: false, 'node-integration': false,
+    title: 'Setting'
+  });
+  settingWindow.loadURL('file://' + __dirname + '/setting.html')
+  settingWindow.show()
+  settingWindow.on('closed', () => {
+    settingWindow = null;
+  });
 });
 
 ipcMain.on('logout', (event, uri) => {
   // Drop all
   db.object = {}
   db.write()
+  mb.window.loadURL(LOGOUT_URL)
+  event.sender.send('main-logout')
 });
 
 /**
@@ -121,9 +162,13 @@ function addTrackToPlaylist () {
     .then(checkDuplicateTrack)
     .then(addTrack)
     .then(notification)
-    .then(() => {
+    .catch(errorHandler)
+}
 
-    })
+function removeTrackFromPlaylist () {
+  getCurrentTack()
+    .then(removeTrackPlaylist)
+    .then(notification)
     .catch(errorHandler)
 }
 
@@ -132,9 +177,13 @@ function addTrackToSavedTracks () {
     .then(checkDuplicateTrackInSavedTracks)
     .then(saveTrack)
     .then(notification)
-    .then(() => {
+    .catch(errorHandler)
+}
 
-    })
+function removeTrackFromSaved () {
+  getCurrentTack()
+    .then(removeTrackSaved)
+    .then(notification)
     .catch(errorHandler)
 }
 
@@ -145,10 +194,10 @@ function addTrackToSavedTracks () {
 /* ------------------------ Initial app ----------------------------- */
 function getAccessToken () {
   return new Promise((resolve, reject) => {
-    const authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
+    var authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
     authWindow.loadUrl(ACCESS_URL);
     // Display auth window for first time
-    if (_.isEmpty(user)) {
+    if (!user) {
       authWindow.show();
     }
 
@@ -157,10 +206,9 @@ function getAccessToken () {
     });
 
     function handleCallback (url) {
-      // TODO : improve get hash
-      var code = url.split('#')[1].substring(13, 292)
-      // Set app variable accessToken
-      accessToken = code
+      // Get accessToken from Url && set app variable
+      var hash  = Url.parse(url).hash.substr(1)
+      accessToken = querystring.parse(hash).access_token
       // Set accessToken to spotifyApi
       spotifyApi.setAccessToken(accessToken)
       // TODO: close window
@@ -213,20 +261,17 @@ function getSelectedPlaylist () {
       if ( playlists.items.find(x => x.name === DEFAULT_PLAYLIST_NAME) ) {
         selectedPlaylist = playlists.items.find(x => x.name === DEFAULT_PLAYLIST_NAME)
         db('selectedPlaylist').push(selectedPlaylist)
-        console.log('Exists');
         resolve()
       } else {
-        console.log('Create new');
-        // Create new "SpotifyPlus" playlist 
+        // Create new "Catify" playlist
         spotifyApi.createPlaylist(user.id, DEFAULT_PLAYLIST_NAME, { 'public' : false })
           .then( data => {
-            // Add created to playlists
-            playlists.push(data.body)
+            // Add created playlist to playlists
+            playlists.items.push(data.body)
             // Set app variable
             selectedPlaylist = data.body
             // Save to Db
             db('selectedPlaylist').push(selectedPlaylist)
-            console.log('Created playlist!');
             resolve()
           }, reject );
       }
@@ -277,8 +322,7 @@ function checkDuplicateTrackInSavedTracks (current) {
 function addTrack (current) {
   return new Promise((resolve, reject) => {
     spotifyApi.addTracksToPlaylist(user.id, selectedPlaylist.id, [current.id])
-      .then( 
-        () => resolve({
+      .then(() => resolve({
           current : current.name,
           type    : 'add'
         }), reject )
@@ -288,21 +332,58 @@ function addTrack (current) {
 function saveTrack (current) {
   return new Promise((resolve, reject) => {
     spotifyApi.addToMySavedTracks([current.id])
-      .then( 
-        () => resolve({
+      .then(() => resolve({
           current : current.name,
           type    : 'save'
         }), reject )
   })
 }
 
+function removeTrackPlaylist (current) {
+  return new Promise((resolve, reject) => {
+    var tracks = { tracks : [{ uri : current.id }] }
+    spotifyApi.removeTracksFromPlaylist(user.id, selectedPlaylist.id, tracks)
+    .then(data => resolve({
+        current : current.name,
+        type    : 'removeTrackFromPlaylist'
+      }), reject)
+  })
+}
+
+function removeTrackSaved (current) {
+  return new Promise((resolve, reject) => {
+    spotifyApi.removeFromMySavedTracks([current.id.substring(14)])
+    .then(data => resolve({
+        current : current.name,
+        type    : 'removeTrackFromSaved'
+      }), reject)
+  })
+}
+
+
 function notification (data) {
   return new Promise((resolve, reject) => {
-    var script = data.type === 'add'
-    ? `display notification "😙 ${data.current} => ${selectedPlaylist.name} 🎵"  with title "Catify"
+    var script = ''
+    switch(data.type) {
+      case 'add' :
+        script = `display notification "😙 ${data.current} => ${selectedPlaylist.name} 🎵"  with title "Catify"
     delay 1`
-    : `display notification "😙 ${data.current} => Saved Tracks 🎵"  with title "Catify" 
+        break
+      case 'save' :
+        script = `display notification "😙 ${data.current} => Saved Tracks 🎵"  with title "Catify"
     delay 1`
+        break
+      case 'removeTrackFromPlaylist' :
+      script = `display notification "😙 ${data.current} Removed 🎵"  with title "Catify"
+    delay 1`
+        break
+      case 'removeTrackFromSaved' :
+      script = `display notification "😙 ${data.current} Removed 🎵"  with title "Catify"
+    delay 1`
+        break
+      default : break;
+    }
+
     applescript.execString(script, (err, rtn) => {
       if (err) {
         reject(err)
@@ -314,5 +395,5 @@ function notification (data) {
 
 
 function errorHandler (err) {
-  console.log('Err handler : ', err);
+  console.error('Err handler : ', err);
 }
