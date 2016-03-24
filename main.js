@@ -41,12 +41,13 @@ const spotifyApi = new SpotifyWebApi({
 
 var mbOptions = {
   dir            : __dirname + '/app',
+  icon           : __dirname + '/IconTemplate.png',
   tooltip        : "Catify",
   preloadWindow  : true, // TODO: enable if already logged in
   width          : 385,
   height         : 210,
   resizable      : true,
-  // TODO : Check this shit
+  // TODO        : Check this shit
   useContentSize : true
 }
 const menubar = require('menubar')
