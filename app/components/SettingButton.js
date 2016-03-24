@@ -25,10 +25,7 @@ export default class SettingButton extends Component {
   }
 
   logoutHandler = (event, value) => {
-    ipcRenderer.send('logout', '')
-    ipcRenderer.on('main-logout', (event, value) => {
-      'https://www.spotify.com/int/logout'
-    })
+    ipcRenderer.send('logout')
   }
 
   aboutHandle = (event, value) => {
@@ -61,8 +58,8 @@ export default class SettingButton extends Component {
           animation={PopoverAnimationFromTop} >
           <Menu>
             <MenuItem primaryText="Setting" />
-            <MenuItem primaryText="About" onclick={this.aboutHandle}/>
-            <MenuItem primaryText="Logout" onclick={this.logoutHandler}/>
+            <MenuItem primaryText="About" onClick={this.aboutHandle}/>
+            <MenuItem primaryText="Logout" onClick={this.logoutHandler}/>
           </Menu>
         </Popover>
       </div>

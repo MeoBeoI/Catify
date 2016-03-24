@@ -101,6 +101,7 @@
     "material-ui": "^0.14.4",
     "menubar": "^4.0.2",
     "postcss": "^5.0.18",
+    "querystring": "^0.2.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.5",

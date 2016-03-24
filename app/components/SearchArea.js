@@ -18,7 +18,7 @@ export default class SearchArea extends Component {
     };
     this.doSearch = debounce(500, this.doSearch)
     // Focus search input on show
-    ipcRenderer.on('focus-input', (event, response) => {  
+    ipcRenderer.on('focus-input', (event, response) => {
       $('#search-input').focus()
     })
     // Play track with Ctrl + Num
@@ -29,20 +29,21 @@ export default class SearchArea extends Component {
     })
   }
 
-  onChange(e) { 
+  onChange(e) {
     if (e.key === 'Enter'){
       this.playTrack(this.state.results[0])
     } else {
-      this.doSearch(e.target.value)  
+      this.doSearch(e.target.value)
     }
   }
 
   doSearch(value) {
     if (!value) {
       this.setState({ results : [] })
+      ipcRenderer.send('empty-search')
     } else {
       ipcRenderer.send('search', value)
-      ipcRenderer.on('main-search', (event, response) => {  
+      ipcRenderer.on('main-search', (event, response) => {
         this.setState({ results : response })
       })
     }
@@ -56,20 +57,20 @@ export default class SearchArea extends Component {
     return (
       <div className="search-area">
         <TextField
-          id='search-input' 
-          floatingLabelText="Search" 
-          onKeyUp={this.onChange.bind(this)} 
+          id='search-input'
+          floatingLabelText="Search"
+          onKeyUp={this.onChange.bind(this)}
           fullWidth={true} />
-        {(() => 
+        {(() =>
         (!_.isEmpty(this.state.results)) ?
         <List>
-          {this.state.results.map(result => 
-            <ListItem 
-              primaryText={result.name} 
+          {this.state.results.map(result =>
+            <ListItem
+              primaryText={result.name}
               secondaryText={result.artists[0].name}
               leftAvatar={<Avatar src={result.album.images[0].url} />}
               rightIcon={<AvPlayArrow />}
-              onClick={this.playTrack.bind(null, result)} /> 
+              onClick={this.playTrack.bind(null, result)} />
           )}
         </List>
         : " "

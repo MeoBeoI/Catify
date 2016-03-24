@@ -1,7 +1,6 @@
 sudo: false
 language: node_js
 node_js:
-  # - "4"
   - "5"
 
 cache:
@@ -28,4 +27,3 @@ before_script:
 script:
 # - npm run test
 - npm run build
-# - npm run test-e2e

@@ -27,8 +27,9 @@ export default class PlaylistSelector extends Component {
   loadPlaylist() {
     ipcRenderer.send('initial')
     ipcRenderer.on('main-initial', (event, response) => {
+      // TODO : check why missing playlists[0] when not using JSON.stringify()
       this.setState({
-        playlists : response.playlists,
+        playlists : JSON.parse(response.playlists),
         value     : response.selectedPlaylist.id
       })
     })
