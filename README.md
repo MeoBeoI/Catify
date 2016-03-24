@@ -1,3 +1,4 @@
+![Travis](https://travis-ci.org/MeoBeoI/Catify.svg?branch=master)
 # Catify
 Utility for Spotifty, even your cat can use **Spotify** now !
 - Show Catify: <kbd>Ctrl</kbd> <kbd>P</kbd> <kbd>/</kbd> ( default )
