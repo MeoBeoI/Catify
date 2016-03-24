@@ -1,6 +1,9 @@
 .settingBtn {
-  position: absolute;
-  right: 25px;
-  top: -5px;
+  display: inline-block;
+  float : right;
   z-index: 2;
+}
+
+.popover {
+  padding: 20px;
 }

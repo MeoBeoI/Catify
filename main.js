@@ -53,6 +53,9 @@ function initial () {
   mb.window.loadURL(`file://${__dirname}/app/app.html`)
   mb.window.on('focus', () => _sendFocusInput() )
   mb.window.on('show', () => _sendFocusInput() )
+
+  // Renew accessToken
+  setInterval(getAccessToken, 1000 * 3500)
 }
 
 crashReporter.start();
@@ -76,12 +79,7 @@ app.on('ready', () => {
     .then(getMe)
     .then(getPlaylists)
     .then(getSelectedPlaylist)
-    .then(() => {
-      initial()
-      console.log('Doing some dirty stuffs');
-      // Renew accessToken
-      setInterval(getAccessToken, 1000 * 3500)
-    })
+    .then(initial)
     .catch(errorHandler)
  
   // Set shortcut
@@ -141,6 +139,7 @@ ipcMain.on('logout', (event, uri) => {
   // Drop all
   db.object = {}
   db.write()
+  event.sender.send('main-logout')
 });
 
 /**
