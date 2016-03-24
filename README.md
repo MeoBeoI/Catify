@@ -12,7 +12,7 @@ Utility for Spotifty, even your cat can use **Spotify** now !
 
 ## Screenshot
 
-![Catify](http://www.codeconcat.com/wp-content/uploads/2016/03/shot1.gif)
+![Catify](http://codeconcat.com/wp-content/uploads/2016/03/screenshot.gif)
 
 ## Install
 
