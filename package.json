@@ -100,6 +100,7 @@
     "lowdb": "^0.12.5",
     "material-ui": "^0.15.0-alpha.2",
     "menubar": "^4.0.2",
+    "open": "0.0.5",
     "postcss": "^5.0.18",
     "querystring": "^0.2.0",
     "react": "^0.14.2",

@@ -6,7 +6,7 @@ import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-f
 import Menu                    from 'material-ui/lib/menus/menu';
 import MenuItem                from 'material-ui/lib/menus/menu-item';
 import styles                  from './SettingButton.css';
-
+import open                    from 'open';
 
 export default class SettingButton extends Component {
   constructor(props) {
@@ -28,8 +28,8 @@ export default class SettingButton extends Component {
     ipcRenderer.send('logout')
   }
 
-  aboutHandle = (event, value) => {
-
+  aboutHandler = (event, value) => {
+    open("https://github.com/MeoBeoI/Catify");
   }
 
   handleTouchTap = (event) => {
@@ -58,7 +58,7 @@ export default class SettingButton extends Component {
           animation={PopoverAnimationFromTop} >
           <Menu>
             <MenuItem primaryText="Setting" />
-            <MenuItem primaryText="About" onClick={this.aboutHandle}/>
+            <MenuItem primaryText="About" onClick={this.aboutHandler}/>
             <MenuItem primaryText="Logout" onClick={this.logoutHandler}/>
           </Menu>
         </Popover>
