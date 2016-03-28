@@ -12,7 +12,7 @@ Utility for **Spotify**, even your 😼 can use **Spotify** now !
 
 ## Screenshot
 
-![Catify](http://codeconcat.com/wp-content/uploads/2016/03/screenshot.gif)
+![Catify](http://codeconcat.com/wp-content/uploads/2016/03/shot2.gif)
 
 ## Install
 
