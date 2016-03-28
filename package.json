@@ -2,7 +2,7 @@
   "name": "catify",
   "productName": "Catify",
   "version": "0.0.1",
-  "description": "Catify spotify",
+  "description": "Utility for Spoitify",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --recursive --require ./test/setup.js test/**/*.spec.js",
