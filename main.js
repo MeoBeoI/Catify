@@ -28,7 +28,7 @@ var accessToken      = ""
 const CLIENT_ID             = 'b6dead381db24aee9825a6baf524e0f3'
 const SECRET                = '9dc4b9daea024d1b87b231527d7b99b8'
 const REDIRECT_URL          = 'http://meobeoi.com/catify/callback'
-const SCOPES                = 'user-read-private playlist-modify-private playlist-read-collaborative playlist-read-private user-library-read user-library-modify'
+const SCOPES                = 'playlist-modify-private playlist-read-private playlist-modify-public user-library-read user-library-modify'
 const STATE                 = '123'
 const DEFAULT_PLAYLIST_NAME = "Catify"
 const ACCESS_URL = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URL)}&scope=${encodeURIComponent(SCOPES)}&response_type=token&state=${STATE}`
@@ -63,7 +63,12 @@ function initial () {
   setInterval(getAccessToken, 1000 * 3500)
 }
 
-crashReporter.start();
+crashReporter.start({
+  productName: 'Catify',
+  companyName: 'MeoBeoI',
+  submitURL: 'http://codeconcat.com:3000/catify/crash',
+  autoSubmit: true
+});
 
 function _sendFocusInput () {
   if (!mb.window) return
@@ -106,7 +111,7 @@ ipcMain.on('initial', (event, message) => {
     user             : user,
     selectedPlaylist : selectedPlaylist,
     // TODO : Check why missing playlists[0]
-    playlists        : JSON.stringify(playlists.items),
+    playlists        : JSON.stringify(playlists),
     accessToken      : accessToken
   }
   event.sender.send('main-initial', response);
@@ -126,7 +131,7 @@ ipcMain.on('empty-search', (event, track) => {
 });
 
 ipcMain.on('playlistChanged', (event, message) => {
-  selectedPlaylist = playlists.items.find(x => x.id === message)
+  selectedPlaylist = playlists.find(x => x.id === message)
 });
 
 ipcMain.on('playTrack', (event, track) => {
@@ -198,7 +203,7 @@ function getAccessToken () {
     var authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
     authWindow.loadUrl(ACCESS_URL);
     // Display auth window for first time
-    if (!user) {
+    if (_.isEmpty(user)) {
       authWindow.show();
     }
 
@@ -220,8 +225,7 @@ function getAccessToken () {
     // Reset the authWindow on close
     authWindow.on('close', () => {
         authWindow = null;
-    }, false);
-
+    }, false)
   })
 }
 
@@ -246,7 +250,8 @@ function getPlaylists (argument) {
   return new Promise((resolve, reject) => {
     spotifyApi.getUserPlaylists(user.id)
       .then( data => {
-        playlists = data.body
+        // Only get playlists of this user
+        playlists = data.body.items.filter(item => item.owner.id === user.id)
         resolve()
       }, reject )
   })
@@ -259,8 +264,8 @@ function getSelectedPlaylist () {
       resolve(selectedPlaylist)
     } else {
       // Check if default playlist exists
-      if ( playlists.items.find(x => x.name === DEFAULT_PLAYLIST_NAME) ) {
-        selectedPlaylist = playlists.items.find(x => x.name === DEFAULT_PLAYLIST_NAME)
+      if ( playlists.find(x => x.name === DEFAULT_PLAYLIST_NAME) ) {
+        selectedPlaylist = playlists.find(x => x.name === DEFAULT_PLAYLIST_NAME)
         db('selectedPlaylist').push(selectedPlaylist)
         resolve()
       } else {
@@ -268,7 +273,7 @@ function getSelectedPlaylist () {
         spotifyApi.createPlaylist(user.id, DEFAULT_PLAYLIST_NAME, { 'public' : false })
           .then( data => {
             // Add created playlist to playlists
-            playlists.items.push(data.body)
+            playlists.push(data.body)
             // Set app variable
             selectedPlaylist = data.body
             // Save to Db
