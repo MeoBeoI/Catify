@@ -47,7 +47,7 @@ var mbOptions = {
   width          : 385,
   height         : 210,
   resizable      : true,
-  // TODO        : Check this shit
+  // TODO        : Check this
   useContentSize : true
 }
 const menubar = require('menubar')
@@ -257,7 +257,6 @@ function getPlaylists (argument) {
   })
 }
 
-
 function getSelectedPlaylist () {
   return new Promise((resolve, reject) => {
     if (selectedPlaylist) {
@@ -394,7 +393,7 @@ function notification (data) {
       if (err) {
         reject(err)
       }
-      resolve()
+      resolve(data)
     });
   })
 }
