@@ -1,5 +1,6 @@
 ![Travis](https://travis-ci.org/MeoBeoI/Catify.svg?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a)
+[![bitHound Overall Score](https://www.bithound.io/github/MeoBeoI/Catify/badges/score.svg)](https://www.bithound.io/github/MeoBeoI/Catify)
 # Catify
 Utility for **Spotify**, even your 😼 can use **Spotify** now !
 
