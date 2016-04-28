@@ -1,4 +1,4 @@
-[![Awesome](https://cdn.rawgit.com/sindresorahus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome-electron)
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome-electron)
 ![Travis](https://travis-ci.org/MeoBeoI/Catify.svg?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a)
 [![bitHound Overall Score](https://www.bithound.io/github/MeoBeoI/Catify/badges/score.svg)](https://www.bithound.io/github/MeoBeoI/Catify)
