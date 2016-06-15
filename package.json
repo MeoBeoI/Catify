@@ -2,7 +2,7 @@
   "name": "catify",
   "productName": "Catify",
   "version": "0.0.1",
-  "description": "Utility for Spoitify",
+  "description": "Catify spotify",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --recursive --require ./test/setup.js test/**/*.spec.js",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MeoBeoI/Catify.git"
+    "url": "git+https://github.com/meobeoi/Catify.git"
   },
   "author": {
     "name": "MeoBeoI",
@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/meobeoi/Catify/issues"
+    "url": "https://github.com/meobeoi/Catifty/issues"
   },
   "keywords": [
     "electron",
@@ -43,7 +43,7 @@
     "webpack",
     "react-hot"
   ],
-  "homepage": "https://github.com/meobeoi/Catify#readme",
+  "homepage": "https://github.com/meobeoi/Catifty#readme",
   "devDependencies": {
     "asar": "^0.10.0",
     "babel-core": "^6.6.0",
@@ -64,15 +64,15 @@
     "css-loader": "^0.23.1",
     "del": "^2.0.1",
     "electron-packager": "^5.2.0",
-    "electron-prebuilt": "^0.37.2",
+    "electron-prebuilt": "^0.36.9",
     "electron-rebuild": "^1.0.0",
-    "eslint": "~2.4.0",
+    "eslint": "~2.2.0",
     "eslint-config-airbnb": "^6.0.2",
     "eslint-plugin-react": "^4.1.0",
     "express": "^4.13.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "fbjs-scripts": "^0.5.0",
-    "jsdom": "^8.1.0",
+    "jsdom": "^7.2.2",
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "mocha": "^2.3.0",
@@ -92,28 +92,24 @@
   },
   "dependencies": {
     "applescript": "^1.0.0",
-    "css-modules-require-hook": "^4.0.0",
+    "css-modules-require-hook": "^3.0.0",
     "electron-debug": "^0.5.2",
-    "eslint": "^2.9.0",
-    "fbjs-scripts": "^0.5.0",
     "font-awesome": "^4.4.0",
-    "jquery": "^2.2.2",
+    "jquery": "^2.2.1",
     "lodash": "^4.6.1",
     "lowdb": "^0.12.5",
-    "material-ui": "^0.15.0-beta.2",
+    "material-ui": "^0.14.4",
     "menubar": "^4.0.2",
-    "open": "0.0.5",
     "postcss": "^5.0.18",
-    "querystring": "^0.2.0",
-    "react": "^0.14.8",
+    "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.5",
     "react-router": "^2.0.0",
     "react-router-redux": "^4.0.0",
     "react-tap-event-plugin": "^0.2.2",
     "redux": "^3.2.1",
-    "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.0.1",
+    "redux-promise": "^0.5.0",
+    "redux-thunk": "^1.0.2",
     "spotify-node-applescript": "^0.2.2",
     "spotify-web-api-node": "^2.2.0",
     "throttle-debounce": "^0.1.1"
