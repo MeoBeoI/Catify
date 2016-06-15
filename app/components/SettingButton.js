@@ -6,7 +6,6 @@ import PopoverAnimationFromTop from 'material-ui/lib/popover/popover-animation-f
 import Menu                    from 'material-ui/lib/menus/menu';
 import MenuItem                from 'material-ui/lib/menus/menu-item';
 import styles                  from './SettingButton.css';
-import open                    from 'open';
 
 export default class SettingButton extends Component {
   constructor(props) {
