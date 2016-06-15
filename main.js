@@ -56,8 +56,8 @@ var debug     = process.env.NODE_ENV === 'development'
 
 function initial () {
   mb.window.loadURL(`file://${__dirname}/app/app.html`)
-  mb.window.on('focus', () => _sendFocusInput() )
-  mb.window.on('show', () => _sendFocusInput() )
+  mb.window.on('focus', _sendFocusInput) 
+  mb.window.on('show' , _sendFocusInput)
 
   // Renew accessToken
   setInterval(getAccessToken, 1000 * 3500)
@@ -123,7 +123,7 @@ ipcMain.on('search', (event, track) => {
     // Resize Window
     mb.window.setSize(385, 585)
     event.sender.send('main-search', data.body.tracks.items)
-  }, err => errorHandler)
+  }, errorHandler)
 });
 
 ipcMain.on('empty-search', (event, track) => {
@@ -233,16 +233,15 @@ function getMe (data) {
   return new Promise((resolve, reject) => {
     if (!_.isEmpty(user)) {
       resolve()
-    } else {
-      spotifyApi.getMe()
-        .then( data => {
-          // Set app variable
-          user = data.body
-          // Save to DB
-          db('user').push(user)
-          resolve()
-        }, reject );
     }
+    spotifyApi.getMe()
+      .then( data => {
+        // Set app variable
+        user = data.body
+        // Save to DB
+        db('user').push(user)
+        resolve()
+      }, reject );
   })
 }
 

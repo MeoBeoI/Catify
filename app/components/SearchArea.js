@@ -23,7 +23,7 @@ export default class SearchArea extends Component {
     })
     // Play track with Ctrl + Num
     $(window).keypress(event => {
-      if (this.state.results && event.which >= 49 && event.which <= 57 && event.ctrlKey) {
+      if (this.state.results && event.which >= 49 && event.which <= 57 && event.metaKey) {
         this.playTrack(this.state.results[event.which - 49])
       }
     })
