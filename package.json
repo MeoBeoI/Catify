@@ -32,7 +32,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/meobeoi/Catifty/issues"
+    "url": "https://github.com/meobeoi/Catify/issues"
   },
   "keywords": [
     "electron",
@@ -43,7 +43,7 @@
     "webpack",
     "react-hot"
   ],
-  "homepage": "https://github.com/meobeoi/Catifty#readme",
+  "homepage": "https://github.com/meobeoi/Catify#readme",
   "devDependencies": {
     "asar": "^0.10.0",
     "babel-core": "^6.6.0",
