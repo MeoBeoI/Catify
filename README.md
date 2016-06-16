@@ -1,5 +1,8 @@
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome-electron)
 ![Travis](https://travis-ci.org/MeoBeoI/Catify.svg?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56f3964c35630e0034fd9f0a)
+[![bitHound Overall Score](https://www.bithound.io/github/MeoBeoI/Catify/badges/score.svg)](https://www.bithound.io/github/MeoBeoI/Catify)
+[![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/MeoBeoI/catify)
 # Catify
 Utility for **Spotify**, even your 😼 can use **Spotify** now !
 
@@ -12,7 +15,7 @@ Utility for **Spotify**, even your 😼 can use **Spotify** now !
 
 ## Screenshot
 
-![Catify](http://codeconcat.com/wp-content/uploads/2016/03/screenshot.gif)
+![Catify](http://i.imgur.com/tki53Ll.gif)
 
 ## Install
 
