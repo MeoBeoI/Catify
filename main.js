@@ -212,14 +212,18 @@ function getAccessToken () {
     });
 
     function handleCallback (url) {
-      // Get accessToken from Url && set app variable
-      var hash  = Url.parse(url).hash.substr(1)
-      accessToken = querystring.parse(hash).access_token
-      // Set accessToken to spotifyApi
-      spotifyApi.setAccessToken(accessToken)
-      // TODO: close window
-      authWindow.hide()
-      resolve()
+      if (url.indexOf('facebook') === -1) {
+        // Get accessToken from Url && set app variable
+        var hash  = Url.parse(url).hash.substr(1);
+        accessToken = querystring.parse(hash).access_token;
+        // Set accessToken to spotifyApi
+        if (accessToken && accessToken.length > 50) {
+          spotifyApi.setAccessToken(accessToken);
+          // TODO: close window
+          authWindow.hide();
+          resolve();
+        }
+      }
     }
 
     // Reset the authWindow on close
