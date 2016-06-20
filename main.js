@@ -55,7 +55,7 @@ var mb        = menubar(mbOptions)
 var debug     = process.env.NODE_ENV === 'development'
 
 function initial () {
-  mb.window.loadURL(`file://${__dirname}/app/app.html`)
+  mb.window.loadURL('file://' + __dirname + '/app/app.html')
   mb.window.on('focus', _sendFocusInput) 
   mb.window.on('show' , _sendFocusInput)
 
@@ -198,21 +198,23 @@ function removeTrackFromSaved () {
  */
 
 /* ------------------------ Initial app ----------------------------- */
-function getAccessToken () {
+function getAccessToken() {
   return new Promise((resolve, reject) => {
     var authWindow = new BrowserWindow({ width: 800, height: 600, show: false, 'node-integration': false });
-    authWindow.loadUrl(ACCESS_URL);
-    // Display auth window for first time
-    if (_.isEmpty(user)) {
-      authWindow.show();
-    }
+    authWindow.loadURL(ACCESS_URL);
 
+    // Display auth window for first time
+    // if (_.isEmpty(user)) {
+      authWindow.show();
+    // }
+    // 
+    // 
     authWindow.webContents.on('did-get-redirect-request', (event, oldUrl, newUrl) => {
       handleCallback(newUrl);
     });
 
     function handleCallback (url) {
-      if (url.indexOf('facebook') === -1) {
+      if (url.indexOf(REDIRECT_URL) !== -1 && Url.parse(url).hash) {
         // Get accessToken from Url && set app variable
         var hash  = Url.parse(url).hash.substr(1);
         accessToken = querystring.parse(hash).access_token;
@@ -371,7 +373,7 @@ function removeTrackSaved (current) {
 
 function notification (data) {
   return new Promise((resolve, reject) => {
-    var script = ''
+    var script = '';
     switch(data.type) {
       case 'add' :
         script = `display notification "😙 ${data.current} => ${selectedPlaylist.name} 🎵"  with title "Catify"
