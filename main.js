@@ -1,5 +1,6 @@
 /* eslint strict: 0 */
 'use strict';
+require('dotenv').config();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
@@ -20,14 +21,14 @@ const storage        = require('lowdb/file-sync')
 const db             = low(__dirname + '/db.json', { storage })
 
 // App variables
-var user             = db('user').first()
-var selectedPlaylist = db('selectedPlaylist').first()
-var playlists        = {}
-var accessToken      = ""
+let user             = db('user').first()
+let selectedPlaylist = db('selectedPlaylist').first()
+let playlists        = {}
+let accessToken      = ""
 
-const CLIENT_ID             = 'b6dead381db24aee9825a6baf524e0f3'
-const SECRET                = '9dc4b9daea024d1b87b231527d7b99b8'
-const REDIRECT_URL          = 'http://meobeoi.com/catify/callback'
+const CLIENT_ID             = process.env.CLIENT_ID;
+const SECRET                = process.env.SECRET;
+const REDIRECT_URL          = process.env.REDIRECT_URL;
 const SCOPES                = 'playlist-modify-private playlist-read-private playlist-modify-public user-library-read user-library-modify'
 const STATE                 = '123'
 const DEFAULT_PLAYLIST_NAME = "Catify"

@@ -76,6 +76,7 @@
   "dependencies": {
     "applescript": "^1.0.0",
     "css-modules-require-hook": "^3.0.0",
+    "dotenv": "^2.0.0",
     "electron-debug": "^0.5.2",
     "font-awesome": "^4.4.0",
     "jquery": "^2.2.1",
