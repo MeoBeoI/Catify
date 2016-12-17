@@ -1,0 +1,49 @@
+{
+    "extends": "airbnb",
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "warn",
+        "no-unreachable": "warn",
+        "no-unused-vars": "warn",
+        "no-confusing-arrow": "warn",
+        "constructor-super": "warn",
+        "valid-typeof": "warn",
+        "arrow-parens": ["off"],
+        "consistent-return": "off",
+        "comma-dangle": "off",
+        "generator-star-spacing": "off",
+        "import/no-unresolved": ["error", { "ignore": ["electron"] }],
+        "import/no-extraneous-dependencies": "off",
+        "import/newline-after-import": "off",
+        "no-use-before-define": "off",
+        "promise/param-names": 2,
+        "promise/no-native": 0,
+        "react/jsx-no-bind": "off",
+        "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+        "react/prefer-stateless-function": "off",
+        "flowtype-errors/show-errors": 2,
+        "key-spacing": "off",
+        "no-multi-spaces": "off",
+        "max-len": "off",
+        "object-property-newline": "off"
+      },
+      "plugins": [
+        "flowtype-errors",
+        "import",
+        "promise",
+        "react"
+      ]
+}

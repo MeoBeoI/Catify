@@ -20,29 +20,29 @@ export default class SettingButton extends Component {
         horizontal: 'left',
         vertical: 'top',
       }
-    }
+    };
   }
 
-  logoutHandler = (event, value) => {
-    ipcRenderer.send('logout')
+  logoutHandler(event, value) {
+    ipcRenderer.send('logout');
   }
 
-  aboutHandler = (event, value) => {
+  aboutHandler(event, value) {
     open("https://github.com/MeoBeoI/Catify");
   }
 
-  handleTouchTap = (event) => {
+  handleTouchTap(event) {
     this.setState({
       open: true,
       anchorEl: event.currentTarget,
     });
-  };
+  }
 
-  handleRequestClose = () => {
+  handleRequestClose() {
     this.setState({
       open: false,
     });
-  };
+  }
 
   render() {
     return (
@@ -54,11 +54,12 @@ export default class SettingButton extends Component {
           anchorOrigin={this.state.anchorOrigin}
           targetOrigin={this.state.targetOrigin}
           onRequestClose={this.handleRequestClose}
-          animation={PopoverAnimationFromTop} >
+          animation={PopoverAnimationFromTop}
+        >
           <Menu>
             <MenuItem primaryText="Setting" />
-            <MenuItem primaryText="About" onClick={this.aboutHandler}/>
-            <MenuItem primaryText="Logout" onClick={this.logoutHandler}/>
+            <MenuItem primaryText="About" onClick={this.aboutHandler} />
+            <MenuItem primaryText="Logout" onClick={this.logoutHandler} />
           </Menu>
         </Popover>
       </div>
