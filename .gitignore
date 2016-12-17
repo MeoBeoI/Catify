@@ -35,3 +35,9 @@ release
 
 # DB
 db.json
+
+# env
+.env
+
+# VSC
+.vscode
